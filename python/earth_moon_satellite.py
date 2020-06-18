@@ -40,8 +40,7 @@ for timestep in range(2, Particle.N):
 
 print('calc time: ', time.perf_counter() - start)
 
-plt.plot(earth.x_vector, earth.y_vector, label=earth.name)
-plt.plot(moon.x_vector, moon.y_vector, label=moon.name)
-plt.plot(satellite.x_vector, satellite.y_vector, label=satellite.name)
-plt.legend(loc="upper left")
-plt.show()
+# ----------------------------------------------- Plot
+#
+#  Implement plot from playground
+#

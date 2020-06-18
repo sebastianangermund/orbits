@@ -25,12 +25,14 @@ class Particle:
     Rmoon = 3.737e6
     #  Merge objects at some distance
     merge = R + Rmoon
+    # Remove object that escape
+    escape = merge ** 3
     #  Coordinate constant
     a = R/math.sqrt(2)
     #  Earth escape velocity [m/s]
     escV = 11e3
     #  Satellite initial absolute velocity (scale the escape velocity)
-    v = 1.0*escV
+    v = 1.0 * escV
 
     def __init__(self, mass, x_pos, y_pos, x_vel, y_vel, name=''):
         self.name = name
@@ -59,20 +61,21 @@ class Particle:
     def _rx_func(cls, x_list, delta_x_list, delta_y_list, k_list):
         r_sq, r_abs = cls._r_func(delta_x_list, delta_y_list)
         cos = np.divide(np.array(delta_x_list), r_abs)
-        rx = 2*x_list[0] - (x_list[1] + np.dot(np.divide(np.array(k_list), r_sq), cos))
+        rx = 2 * x_list[0] - (x_list[1] + np.dot(np.divide(np.array(k_list), r_sq), cos))
         return rx
 
     @classmethod
     def _ry_func(cls, y_list, delta_x_list, delta_y_list, k_list):
         r_sq, r_abs = cls._r_func(delta_x_list, delta_y_list)
         sin = np.divide(np.array(delta_y_list), r_abs)
-        ry = 2*y_list[0] - (y_list[1] + np.dot(np.divide(np.array(k_list), r_sq), sin))
+        ry = 2 * y_list[0] - (y_list[1] + np.dot(np.divide(np.array(k_list), r_sq), sin))
         return ry
 
     @classmethod
     def _update_positions(cls, timestep):
         distance_list = []
         merged = []
+        del_ = []
         for ref_1 in cls._instances:
             obj_1 = ref_1()
             distance_dict = {}
@@ -83,13 +86,16 @@ class Particle:
                 delta_x = obj_1.x_vector[timestep-1] - obj_2.x_vector[timestep-1]
                 delta_y = obj_1.y_vector[timestep-1] - obj_2.y_vector[timestep-1]
                 coll = False
-                if math.sqrt(delta_x**2 + delta_y**2) <= cls.merge:
-                    coll = True
-                    delta_x, delta_y = 10e10, 10e10
-                    if obj_1 not in merged:
+                if obj_1 not in merged and obj_1 not in del_ and obj_2 not in merged and obj_2 not in del_:
+                    if math.sqrt(delta_x**2 + delta_y**2) <= cls.merge:
+                        coll = True
+                        delta_x, delta_y = 10e10, 10e10
                         merged.append(obj_1)
                         if obj_2 not in merged:
                             merged.append(obj_2)
+                    elif obj_1.x_vector[timestep-1] > cls.escape or obj_1.y_vector[timestep-1] > cls.escape:
+                        if obj_1 not in merged:
+                            del_.append(obj_1)
 
                 distance_dict[index] = {
                     'x': delta_x, 'y': delta_y, 'k': obj_2.K, 'coll': coll,
@@ -117,7 +123,6 @@ class Particle:
             object[0].x_vector[timestep] = cls._rx_func(x_list, delta_x_list, delta_y_list, k_list)
             object[0].y_vector[timestep] = cls._ry_func(y_list, delta_x_list, delta_y_list, k_list)
 
-        del_ = []
         for i, ob in enumerate(merged[::2]):
             ob_2 = merged[i+1]
             ob.mass += ob_2.mass
