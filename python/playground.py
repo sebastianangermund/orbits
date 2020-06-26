@@ -8,7 +8,7 @@ from three_bodies import Particle
 
 # ---------------------------------------------- Physics
 Particle.G = 1
-Particle.h = 0.001
+Particle.h = 0.004
 Particle.N = 10000
 Particle.merge = 0.1
 Particle.escape = 100
@@ -18,7 +18,7 @@ theta_range = (0, 2*np.pi)
 radius_range = (30, 36)
 velocity_range = (170, 200)
 mass_range = (0, 50)
-names = 'a'*150
+names = 'a'*30
 coord_range = 6
 particles = []
 
@@ -59,6 +59,7 @@ for timestep in range(2, Particle.N):
 print('calc time: ', time.perf_counter() - start)
 
 for particle in Particle._instances:
+    particle = particle()
     print(particle.name, particle.mass)
 # ----------------------------------------------- Plot
 axis = 15

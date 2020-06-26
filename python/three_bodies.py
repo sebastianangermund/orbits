@@ -89,11 +89,10 @@ class Particle:
                 if obj_1 not in merged and obj_1 not in del_ and obj_2 not in merged and obj_2 not in del_:
                     if math.sqrt(delta_x**2 + delta_y**2) <= cls.merge:
                         coll = True
-                        delta_x, delta_y = 10e10, 10e10
                         merged.append(obj_1)
                         if obj_2 not in merged:
                             merged.append(obj_2)
-                    elif obj_1.x_vector[timestep-1] > cls.escape or obj_1.y_vector[timestep-1] > cls.escape:
+                    elif abs(obj_1.x_vector[timestep-1]) > cls.escape or abs(obj_1.y_vector[timestep-1]) > cls.escape:
                         if obj_1 not in merged:
                             del_.append(obj_1)
 
