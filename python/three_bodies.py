@@ -38,8 +38,6 @@ class Particle:
         self.name = name
         self.mass = mass
         self.K = math.pow(self.h, 2) * self.G * self.mass
-        # self.x_pos = x_pos
-        # self.y_pos = y_pos
         self.x_vector = np.zeros(self.N)
         self.x_vector[0] = x_pos
         self.x_vector[1] = x_pos + (self.h * x_vel)
@@ -74,8 +72,6 @@ class Particle:
     @classmethod
     def _update_positions(cls, timestep):
         distance_list = []
-        merged = []
-        del_ = []
         for ref_1 in cls._instances:
             obj_1 = ref_1()
             distance_dict = {}
@@ -85,33 +81,15 @@ class Particle:
                     continue
                 delta_x = obj_1.x_vector[timestep-1] - obj_2.x_vector[timestep-1]
                 delta_y = obj_1.y_vector[timestep-1] - obj_2.y_vector[timestep-1]
-                coll = False
-                if obj_1 not in merged and obj_1 not in del_ and obj_2 not in merged and obj_2 not in del_:
-                    if math.sqrt(delta_x**2 + delta_y**2) <= cls.merge:
-                        coll = True
-                        merged.append(obj_1)
-                        if obj_2 not in merged:
-                            merged.append(obj_2)
-                    elif abs(obj_1.x_vector[timestep-1]) > cls.escape or abs(obj_1.y_vector[timestep-1]) > cls.escape:
-                        if obj_1 not in merged:
-                            del_.append(obj_1)
 
                 distance_dict[index] = {
-                    'x': delta_x, 'y': delta_y, 'k': obj_2.K, 'coll': coll,
+                    'x': delta_x, 'y': delta_y, 'k': obj_2.K,
                 }
             distance_list.append((obj_1, distance_dict))
 
         for object in distance_list:
             relations = [di for key, di in object[1].items()]
-            coll_list = [di['coll'] for di in relations]
-            if True in coll_list:
-                object[0].x_vector[timestep] = \
-                    object[0].x_vector[timestep - 1] \
-                    + (object[0].x_vector[timestep - 1] - object[0].x_vector[timestep - 2])/3
-                object[0].y_vector[timestep] = \
-                    object[0].y_vector[timestep - 1] \
-                    + (object[0].y_vector[timestep - 1] - object[0].y_vector[timestep - 1])/3
-                continue
+
             delta_x_list = [di['x'] for di in relations]
             delta_y_list = [di['y'] for di in relations]
             k_list = [di['k'] for di in relations]
@@ -121,13 +99,3 @@ class Particle:
 
             object[0].x_vector[timestep] = cls._rx_func(x_list, delta_x_list, delta_y_list, k_list)
             object[0].y_vector[timestep] = cls._ry_func(y_list, delta_x_list, delta_y_list, k_list)
-
-        for i, ob in enumerate(merged[::2]):
-            ob_2 = merged[i+1]
-            ob.mass += ob_2.mass
-            ob.K = math.pow(ob.h, 2) * ob.G * ob.mass
-            del_.append(ob_2)
-
-        for ob in del_:
-            cls._instances.remove(weakref.ref(ob))
-            del ob

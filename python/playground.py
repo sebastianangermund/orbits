@@ -18,7 +18,7 @@ theta_range = (0, 2*np.pi)
 radius_range = (30, 36)
 velocity_range = (170, 200)
 mass_range = (0, 50)
-names = 'a'*30
+names = 'a'*25
 coord_range = 6
 particles = []
 
@@ -65,8 +65,8 @@ for particle in Particle._instances:
 axis = 15
 
 fig = plt.figure()
-ax1 = plt.axes(xlim=(-int(coord_range)*30, int(coord_range)*30),
-               ylim=(-int(coord_range)*30, int(coord_range)*30))
+ax1 = plt.axes(xlim=(-int(coord_range)*40, int(coord_range)*40),
+               ylim=(-int(coord_range)*40, int(coord_range)*40))
 line, = ax1.plot([], [], lw=2)
 plt.xlabel('X')
 plt.ylabel('Y')
