@@ -1,26 +1,14 @@
 import math
-import time
-import matplotlib.pyplot as plt
-from matplotlib import animation
 
 from three_bodies import Particle
+from plot import plot
 
 
 # ---------------------------------------------- Physics
 Particle.G = 1
-Particle.h = 0.001
+Particle.h = 0.002
 Particle.N = 5000
 # ---------------------------------------------- Particle 1
-
-# names = 'abc'
-# particles = []
-# for name in names:
-#     particles.append(
-#         Particle(
-#
-#         )
-#     )
-
 earth = Particle(
     name = 'a',
     mass = 100,
@@ -54,6 +42,5 @@ for timestep in range(2, Particle.N):
     Particle._update_positions(timestep)
 
 # ----------------------------------------------- Plot
-#
-#  Implement plot from playground
-#
+
+plot(particles, 6, Particle.N)
