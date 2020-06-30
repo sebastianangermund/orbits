@@ -56,25 +56,23 @@ class Particle:
         return r_sq, r_abs
 
     @classmethod
-    def _rx_func(cls, x_list, delta_x_list, delta_y_list, k_list):
+    def _r_update_func(cls, x_list, y_list, delta_x_list, delta_y_list, k_list):
         r_sq, r_abs = cls._r_func(delta_x_list, delta_y_list)
         cos = np.divide(np.array(delta_x_list), r_abs)
-        rx = 2 * x_list[0] - (x_list[1] + np.dot(np.divide(np.array(k_list), r_sq), cos))
-        return rx
-
-    @classmethod
-    def _ry_func(cls, y_list, delta_x_list, delta_y_list, k_list):
-        r_sq, r_abs = cls._r_func(delta_x_list, delta_y_list)
         sin = np.divide(np.array(delta_y_list), r_abs)
+        rx = 2 * x_list[0] - (x_list[1] + np.dot(np.divide(np.array(k_list), r_sq), cos))
         ry = 2 * y_list[0] - (y_list[1] + np.dot(np.divide(np.array(k_list), r_sq), sin))
-        return ry
+        return rx, ry
 
     @classmethod
     def _update_positions(cls, timestep):
-        distance_list = []
+        update_list = []
         for ref_1 in cls._instances:
             obj_1 = ref_1()
-            distance_dict = {}
+            delta_x_list = []
+            delta_y_list = []
+            k_list = []
+            delta_list = [obj_1, delta_x_list, delta_y_list, k_list]
             for index, ref_2 in enumerate(cls._instances):
                 obj_2 = ref_2()
                 if obj_1 == obj_2:
@@ -82,20 +80,15 @@ class Particle:
                 delta_x = obj_1.x_vector[timestep-1] - obj_2.x_vector[timestep-1]
                 delta_y = obj_1.y_vector[timestep-1] - obj_2.y_vector[timestep-1]
 
-                distance_dict[index] = {
-                    'x': delta_x, 'y': delta_y, 'k': obj_2.K,
-                }
-            distance_list.append((obj_1, distance_dict))
+                delta_list[1].append(delta_x)
+                delta_list[2].append(delta_y)
+                delta_list[3].append(obj_2.K)
 
-        for object in distance_list:
-            relations = [di for key, di in object[1].items()]
+            update_list.append(delta_list)
 
-            delta_x_list = [di['x'] for di in relations]
-            delta_y_list = [di['y'] for di in relations]
-            k_list = [di['k'] for di in relations]
+        for delta_list in update_list:
+            x_list = [delta_list[0].x_vector[timestep-1], delta_list[0].x_vector[timestep-2]]
+            y_list = [delta_list[0].y_vector[timestep-1], delta_list[0].y_vector[timestep-2]]
 
-            x_list = [object[0].x_vector[timestep-1], object[0].x_vector[timestep-2]]
-            y_list = [object[0].y_vector[timestep-1], object[0].y_vector[timestep-2]]
-
-            object[0].x_vector[timestep] = cls._rx_func(x_list, delta_x_list, delta_y_list, k_list)
-            object[0].y_vector[timestep] = cls._ry_func(y_list, delta_x_list, delta_y_list, k_list)
+            delta_list[0].x_vector[timestep], delta_list[0].y_vector[timestep] \
+                = cls._r_update_func(x_list, y_list, delta_list[1], delta_list[2], delta_list[3])

@@ -8,16 +8,18 @@ from three_bodies import Particle
 
 # ---------------------------------------------- Physics
 Particle.G = 1
-Particle.h = 0.002
-Particle.N = 10000
+Particle.h = 0.004
+Particle.N = 7500
 Particle.merge = 0.1
 Particle.escape = 100
 # ---------------------------------------------- Particles
+num_particles = 100
+
 theta_range = (0, 2*np.pi)
-radius_range = (28, 38)
-velocity_range = (170, 220)
+radius_range = (28, 45)
+velocity_range = (165, 220)
 mass_range = (0, 50)
-names = 'a'*75
+names = 'a'*num_particles
 coord_range = 6
 particles = []
 
@@ -51,11 +53,15 @@ for name in names:
 # ----------------------------------------------- Calculate
 
 start = time.perf_counter()
+print(f'\nCalculating... Updating {num_particles} particles position {Particle.N} times.\n')
 
 for timestep in range(2, Particle.N):
     Particle._update_positions(timestep)
 
-print('calc time: ', time.perf_counter() - start)
+calc_time = time.perf_counter() - start
+
+print(f'calc time: {calc_time}\n')
+print(f'Calc time/step was approximately {calc_time/Particle.N} s\n')
 
 for particle in Particle._instances:
     particle = particle()
