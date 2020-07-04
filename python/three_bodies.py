@@ -1,6 +1,5 @@
 #
-#  SIMULATE ORBITS OF A THREE BODY SYSTEM (SPECIFICALLY AN
-#  EARTH-MOON-SATELLITE SYSTEM) USING NEWTONS LAW OF GRAVITY.
+#  SIMULATE ORBITS OF AN N BODY SYSTEM USING NEWTONS LAW OF GRAVITY.
 #
 #  O(h^2)
 #
@@ -15,7 +14,7 @@ class Particle:
     _instances = set()
     #  Time step [seconds]
     h = 3
-    #   N*timestep = simulation length in seconds
+    #   N*timestep = simulation length in seconds * h
     N = 300000
     #  Gravitational constant [SI units]
     G = 6.67e-11
@@ -46,18 +45,10 @@ class Particle:
         self.y_vector[1] = y_pos + (self.h * y_vel)
         self._instances.add(weakref.ref(self))
 
-        def __del__(self):
-            pass
-
-    @classmethod
-    def _r_func(cls, delta_x_list, delta_y_list):
-        r_sq = np.square(delta_x_list) + np.square(delta_y_list)
-        r_abs = np.sqrt(r_sq)
-        return r_sq, r_abs
-
     @classmethod
     def _r_update_func(cls, x_list, y_list, delta_x_list, delta_y_list, k_list):
-        r_sq, r_abs = cls._r_func(delta_x_list, delta_y_list)
+        r_sq = np.square(delta_x_list) + np.square(delta_y_list)
+        r_abs = np.sqrt(r_sq)
         cos = np.divide(np.array(delta_x_list), r_abs)
         sin = np.divide(np.array(delta_y_list), r_abs)
         rx = 2 * x_list[0] - (x_list[1] + np.dot(np.divide(np.array(k_list), r_sq), cos))

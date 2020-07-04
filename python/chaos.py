@@ -6,8 +6,8 @@ from plot import plot
 
 # ---------------------------------------------- Physics
 Particle.G = 1
-Particle.h = 0.002
-Particle.N = 5000
+Particle.h = 0.003
+Particle.N = 2000
 # ---------------------------------------------- Particle 1
 earth = Particle(
     name = 'a',
