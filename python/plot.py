@@ -43,7 +43,7 @@ def plot(particles, axees, sim_len):
         ylist = [tup[1] for tup in coord_tuples]
 
         for lnum, line in enumerate(lines):
-            line.set_data(xlist[lnum][-10:], ylist[lnum][-10:])
+            line.set_data(xlist[lnum][-5:], ylist[lnum][-5:])
 
         return lines
 

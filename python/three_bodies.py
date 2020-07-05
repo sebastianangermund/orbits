@@ -64,7 +64,7 @@ class Particle:
             delta_y_list = []
             k_list = []
             delta_list = [obj_1, delta_x_list, delta_y_list, k_list]
-            for index, ref_2 in enumerate(cls._instances):
+            for ref_2 in cls._instances:
                 obj_2 = ref_2()
                 if obj_1 == obj_2:
                     continue

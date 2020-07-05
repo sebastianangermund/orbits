@@ -5,7 +5,7 @@ from plot import plot
 
 
 # ---------------------------------------------- Physics
-Particle.G = 1
+Particle.G = 1.0001
 Particle.h = 0.003
 Particle.N = 2000
 # ---------------------------------------------- Particle 1
