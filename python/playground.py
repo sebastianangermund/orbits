@@ -9,22 +9,22 @@ from three_bodies import Particle
 # ---------------------------------------------- Physics
 Particle.G = 1
 Particle.h = 0.004
-Particle.N = 7500
+Particle.N = 10000
 Particle.merge = 0.1
 Particle.escape = 100
 # ---------------------------------------------- Particles
-num_particles = 100
+num_particles = 150
+Particle._set_size(num_particles)
 
 theta_range = (0, 2*np.pi)
 radius_range = (28, 45)
 velocity_range = (165, 220)
 mass_range = (0, 50)
-names = 'a'*num_particles
-coord_range = 6
+indexes = list(range(1, num_particles))
 particles = []
 
 sun = Particle(
-    name = 'sun',
+    index = 0,
     mass = 10**6,
     x_pos = 0,
     y_pos = 0,
@@ -33,7 +33,7 @@ sun = Particle(
 )
 particles.append(sun)
 
-for name in names:
+for index in indexes:
     radius = random.uniform(radius_range[0], radius_range[1])
     theta = random.uniform(theta_range[0], theta_range[1])
     vel = random.randrange(velocity_range[0], velocity_range[1])
@@ -41,7 +41,7 @@ for name in names:
     x_vel, y_vel = vel * np.sin(theta), - vel * np.cos(theta)
     particles.append(
         Particle(
-            name = name,
+            index = index,
             mass = random.randrange(mass_range[0], mass_range[1]),
             x_pos = x_pos,
             y_pos = y_pos,
@@ -63,9 +63,14 @@ calc_time = time.perf_counter() - start
 print(f'calc time: {calc_time}\n')
 print(f'Calc time/step was approximately {calc_time/Particle.N} s\n')
 
-for particle in Particle._instances:
-    particle = particle()
-    print(particle.name, particle.mass)
+# for particle in Particle._instances:
+#     particle = particle()
+#     print(particle.index, particle.mass)
 # ----------------------------------------------- Plot
 
-plot(particles, int(coord_range)*40, Particle.N)
+# Plot M last steps of simulation
+M = 2000
+plot_array = Particle.particle_array[:,M:]
+
+coord_range = 6
+plot(plot_array, num_particles, int(coord_range)*40, M)

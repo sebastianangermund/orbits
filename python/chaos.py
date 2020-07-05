@@ -8,9 +8,12 @@ from plot import plot
 Particle.G = 1.0001
 Particle.h = 0.003
 Particle.N = 2000
+
+num_particles = 3
+Particle._set_size(num_particles)
 # ---------------------------------------------- Particle 1
 earth = Particle(
-    name = 'a',
+    index = 0,
     mass = 100,
     x_pos = 0,
     y_pos = 0,
@@ -19,7 +22,7 @@ earth = Particle(
 )
 # ---------------------------------------------- Particle 2
 moon = Particle(
-    name = 'b',
+    index = 1,
     mass = 100,
     x_pos = 1,
     y_pos = 0,
@@ -28,7 +31,7 @@ moon = Particle(
 )
 # ----------------------------------------------- Particle 3
 satellite = Particle(
-    name = 'c',
+    index = 2,
     mass = 100,
     x_pos = 1/2,
     y_pos = math.sin((2*math.pi)/3),
@@ -43,4 +46,4 @@ for timestep in range(2, Particle.N):
 
 # ----------------------------------------------- Plot
 
-plot(particles, 6, Particle.N)
+plot(Particle.particle_array, num_particles, 6, Particle.N)

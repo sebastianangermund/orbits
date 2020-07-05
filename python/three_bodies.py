@@ -33,53 +33,49 @@ class Particle:
     #  Satellite initial absolute velocity (scale the escape velocity)
     v = 1.0 * escV
 
-    def __init__(self, mass, x_pos, y_pos, x_vel, y_vel, name=''):
-        self.name = name
+    def __init__(self, index, mass, x_pos, y_pos, x_vel, y_vel):
+        self.index = index
         self.mass = mass
-        self.K = math.pow(self.h, 2) * self.G * self.mass
-        self.x_vector = np.zeros(self.N)
-        self.x_vector[0] = x_pos
-        self.x_vector[1] = x_pos + (self.h * x_vel)
-        self.y_vector = np.zeros(self.N)
-        self.y_vector[0] = y_pos
-        self.y_vector[1] = y_pos + (self.h * y_vel)
+        self.k_array[self.index] = math.pow(self.h, 2) * self.G * self.mass
+        # self.x_vector = np.zeros(self.N)
+        self.particle_array[self.index*2, 0] = x_pos
+        self.particle_array[self.index*2, 1] = x_pos + (self.h * x_vel)
+        self.particle_array[self.index*2+1, 0] = y_pos
+        self.particle_array[self.index*2+1, 1] = y_pos + (self.h * y_vel)
         self._instances.add(weakref.ref(self))
 
     @classmethod
-    def _r_update_func(cls, x_list, y_list, delta_x_list, delta_y_list, k_list):
-        r_sq = np.square(delta_x_list) + np.square(delta_y_list)
+    def _set_size(cls, num_particles=3):
+        cls.particle_array = np.zeros((2*num_particles, cls.N), dtype=float)
+        cls.k_array = np.zeros(num_particles)
+
+    @classmethod
+    def _r_update_func(cls, x_step, y_step, delta_x, delta_y, k_list):
+        r_sq = np.square(delta_x) + np.square(delta_y)
         r_abs = np.sqrt(r_sq)
-        cos = np.divide(np.array(delta_x_list), r_abs)
-        sin = np.divide(np.array(delta_y_list), r_abs)
-        rx = 2 * x_list[0] - (x_list[1] + np.dot(np.divide(np.array(k_list), r_sq), cos))
-        ry = 2 * y_list[0] - (y_list[1] + np.dot(np.divide(np.array(k_list), r_sq), sin))
+        cos = np.divide(np.array(delta_x), r_abs)
+        sin = np.divide(np.array(delta_y), r_abs)
+        rx = 2 * x_step[0] - (x_step[1] + np.dot(np.divide(np.array(k_list), r_sq), cos))
+        ry = 2 * y_step[0] - (y_step[1] + np.dot(np.divide(np.array(k_list), r_sq), sin))
         return rx, ry
 
     @classmethod
     def _update_positions(cls, timestep):
-        update_list = []
         for ref_1 in cls._instances:
             obj_1 = ref_1()
-            delta_x_list = []
-            delta_y_list = []
-            k_list = []
-            delta_list = [obj_1, delta_x_list, delta_y_list, k_list]
-            for ref_2 in cls._instances:
-                obj_2 = ref_2()
-                if obj_1 == obj_2:
-                    continue
-                delta_x = obj_1.x_vector[timestep-1] - obj_2.x_vector[timestep-1]
-                delta_y = obj_1.y_vector[timestep-1] - obj_2.y_vector[timestep-1]
+            x_relevant = cls.particle_array[obj_1.index*2, timestep-1]
+            y_relevant = cls.particle_array[obj_1.index*2+1, timestep-1]
+            delta_array = np.delete(
+                cls.particle_array[:, timestep-1],
+                (obj_1.index*2, obj_1.index*2+1),
+                axis=0,
+            )
+            k_list = np.delete(cls.k_array, (obj_1.index))
+            delta_x = x_relevant - delta_array[::2]
+            delta_y = y_relevant - delta_array[1::2]
 
-                delta_list[1].append(delta_x)
-                delta_list[2].append(delta_y)
-                delta_list[3].append(obj_2.K)
+            x_step = [x_relevant, cls.particle_array[obj_1.index*2, timestep-2]]
+            y_step = [y_relevant, cls.particle_array[obj_1.index*2+1, timestep-2]]
 
-            update_list.append(delta_list)
-
-        for delta_list in update_list:
-            x_list = [delta_list[0].x_vector[timestep-1], delta_list[0].x_vector[timestep-2]]
-            y_list = [delta_list[0].y_vector[timestep-1], delta_list[0].y_vector[timestep-2]]
-
-            delta_list[0].x_vector[timestep], delta_list[0].y_vector[timestep] \
-                = cls._r_update_func(x_list, y_list, delta_list[1], delta_list[2], delta_list[3])
+            cls.particle_array[obj_1.index*2, timestep], cls.particle_array[obj_1.index*2+1, timestep] \
+                = cls._r_update_func(x_step, y_step, delta_x, delta_y, k_list)

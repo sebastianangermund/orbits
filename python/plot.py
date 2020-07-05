@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 
 
-def plot(particles, axees, sim_len):
+def plot(particle_array, num_particles, axees, sim_len):
     fig = plt.figure()
     ax1 = plt.axes(xlim=(-axees, axees),
                    ylim=(-axees, axees))
@@ -14,16 +14,16 @@ def plot(particles, axees, sim_len):
     Writer = animation.writers['ffmpeg']
     writer = Writer(fps=35, metadata=dict(artist='Me'), bitrate=1800)
 
-    plotlays = [len(particles)]
+    plotlays = [num_particles]
     colors = ['blue','green','red','cyan','magenta','black']
     plotcols = [
         colors[i] for i in [
-            random.randrange(0,len(colors)) for _ in range(0, len(particles) + 1)
+            random.randrange(0,len(colors)) for _ in range(0, num_particles + 1)
         ]
     ]
 
     lines = []
-    for index in range(len(particles)):
+    for index in range(num_particles):
         lobj = ax1.plot([],[],lw=2,color=plotcols[index])[0]
         lines.append(lobj)
 
@@ -32,12 +32,12 @@ def plot(particles, axees, sim_len):
             line.set_data([],[])
         return lines
 
-    coord_tuples = [([], []) for _ in range(len(particles))]
+    coord_tuples = [([], []) for _ in range(num_particles)]
 
     def animate(i):
-        for index, p in enumerate(particles):
-            coord_tuples[index][0].append(p.x_vector[i])
-            coord_tuples[index][1].append(p.y_vector[i])
+        for index in range(0, num_particles):
+            coord_tuples[index][0].append(particle_array[2*index, i])
+            coord_tuples[index][1].append(particle_array[2*index+1, i])
 
         xlist = [tup[0] for tup in coord_tuples]
         ylist = [tup[1] for tup in coord_tuples]
