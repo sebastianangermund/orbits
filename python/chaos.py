@@ -5,9 +5,9 @@ from plot import plot
 
 
 # ---------------------------------------------- Physics
-Particle.G = 1.0001
-Particle.h = 0.003
-Particle.N = 2000
+Particle.G = 1.003
+Particle.h = 0.002
+Particle.N = 3000
 
 num_particles = 3
 Particle._set_size(num_particles)
@@ -46,4 +46,4 @@ for timestep in range(2, Particle.N):
 
 # ----------------------------------------------- Plot
 
-plot(Particle.particle_array, num_particles, 6, Particle.N)
+plot(Particle.particle_array, num_particles, 10, Particle.N)
