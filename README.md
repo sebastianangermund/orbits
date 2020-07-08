@@ -9,4 +9,6 @@
 
 You will need a ffmpeg writer. For Linux do `apt-get install ffmpeg`
 
+With `python/chaos.py` you can get a nice effect of chaos. Make a small change to any initial value and the outcome will differ dramatically.
+
 `matlab/` is legacy.
