@@ -1,5 +1,5 @@
 #
-#  SIMULATE ORBITS OF AN N BODY SYSTEM USING NEWTONS LAW OF GRAVITY.
+#  SIMULATE ORBITS OF A PARTICLE SYSTEM USING NEWTONS LAW OF GRAVITY.
 #
 #  O(h^2)
 #
@@ -22,22 +22,15 @@ class Particle:
     R = 6.571e6
     #  Moon radius [m]
     Rmoon = 3.737e6
-    #  Merge objects at some distance
-    merge = R + Rmoon
-    # Remove object that escape
-    escape = merge ** 3
     #  Coordinate constant
     a = R/math.sqrt(2)
     #  Earth escape velocity [m/s]
     escV = 11e3
-    #  Satellite initial absolute velocity (scale the escape velocity)
-    v = 1.0 * escV
 
     def __init__(self, index, mass, x_pos, y_pos, x_vel, y_vel):
         self.index = index
         self.mass = mass
         self.k_array[self.index] = math.pow(self.h, 2) * self.G * self.mass
-        # self.x_vector = np.zeros(self.N)
         self.particle_array[self.index*2, 0] = x_pos
         self.particle_array[self.index*2, 1] = x_pos + (self.h * x_vel)
         self.particle_array[self.index*2+1, 0] = y_pos
