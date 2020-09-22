@@ -1,9 +1,10 @@
 import random
+import time
 import matplotlib.pyplot as plt
 from matplotlib import animation
 
 
-def plot(particle_array, num_particles, axees, sim_len):
+def plot(particle_array, num_particles, axees, sim_len, plot_step):
     fig = plt.figure()
     ax1 = plt.axes(xlim=(-axees, axees),
                    ylim=(-axees, axees))
@@ -18,7 +19,7 @@ def plot(particle_array, num_particles, axees, sim_len):
     colors = ['blue','green','red','cyan','magenta','black']
     plotcols = [
         colors[i] for i in [
-            random.randrange(0,len(colors)) for _ in range(0, num_particles + 1)
+            random.randrange(0, len(colors)) for _ in range(0, num_particles+1)
         ]
     ]
 
@@ -49,8 +50,10 @@ def plot(particle_array, num_particles, axees, sim_len):
 
     # call the animator.  blit=True means only re-draw the parts that have changed.
     anim = animation.FuncAnimation(fig, animate, init_func=init,
-                                   frames=range(0, sim_len, 4),
+                                   frames=range(0, sim_len, plot_step),
                                    interval=10, blit=True)
-
-    print('Creating animation ...')
+    start = time.perf_counter()
+    print('Creating animation ...\n')
     anim.save('lines.mp4', writer=writer)
+    calc_time = time.perf_counter() - start
+    print(f'animation time: {calc_time} s\n')

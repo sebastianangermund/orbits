@@ -14,7 +14,7 @@ class Particle:
     _instances = set()
     #  Time step [seconds]
     h = 3
-    #   N*timestep = simulation length in seconds * h
+    #   N*timestep = simulation length [seconds]
     N = 300000
     #  Gravitational constant [SI units]
     G = 6.67e-11
