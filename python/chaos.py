@@ -40,7 +40,6 @@ satellite = Particle(
     y_vel = 0,
 )
 # ----------------------------------------------- Calculate
-# particles = [earth, moon, satellite]
 for timestep in range(2, Particle.N):
     Particle._update_positions(timestep)
 
