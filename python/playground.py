@@ -9,15 +9,15 @@ from three_bodies import Particle
 # ---------------------------------------------- Physics
 Particle.G = 1
 Particle.h = 0.01
-Particle.N = 1500
+Particle.N = 500
 Particle.escape = 100
 # ---------------------------------------------- Particles
-num_particles = 300
+num_particles = 3000
 Particle._set_size(num_particles)
 
 theta_range = (0, 2*np.pi)
-radius_range = (25, 200)
-velocity_range = (700, 1200)
+radius_range = (25, 210)
+velocity_range = (650, 1300)
 mass_range = (0, 50)
 indexes = list(range(1, num_particles))
 particles = []
@@ -51,24 +51,23 @@ for index in indexes:
 
 # ----------------------------------------------- Calculate
 
+number_of_cores = None # None defaults to os.cpu_count()
+
 start = time.perf_counter()
 print(f'\nCalculating... Updating {num_particles} particle positions {Particle.N} times.\n')
 
 for timestep in range(2, Particle.N):
-    Particle._update_positions(timestep)
+    Particle.run_update(number_of_cores)
 
 calc_time = time.perf_counter() - start
 
 print(f'calc time: {calc_time} s\n')
 print(f'Calc time/step was {calc_time/Particle.N} s\n')
 
-# for particle in Particle._instances:
-#     particle = particle()
-#     print(particle.index, particle.mass)
 # ----------------------------------------------- Plot
 
 # Plot end of simulation only?
-plot_start_index = 0
+plot_start_index = 90
 plot_array = Particle.particle_array[:,plot_start_index:]
 coord_range = 350
 plot_every_nth_step = 2
