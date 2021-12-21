@@ -40,8 +40,9 @@ satellite = Particle(
     y_vel = 0,
 )
 # ----------------------------------------------- Calculate
+number_of_cores = None
 for timestep in range(2, Particle.N):
-    Particle._update_positions(timestep)
+    Particle.run_update(number_of_cores)
 
 # ----------------------------------------------- Plot
 
