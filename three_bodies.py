@@ -12,22 +12,10 @@ import multiprocessing as mp
 
 class Particle:
     use_multiprocessing = False
-    # Timestep index
-    timestep = 2
-    #  Time step length [seconds]
-    h = 3
-    #   N*timestep = simulation length [seconds]
-    N = 300000
-    #  Gravitational constant [SI units]
-    G = 6.67e-11
-    #  Earth radius [m]
-    R = 6.571e6
-    #  Moon radius [m]
-    Rmoon = 3.737e6
-    #  Coordinate constant
-    a = R/np.sqrt(2)
-    #  Earth escape velocity [m/s]
-    escV = 11e3
+    timestep = 2    # timestep index
+    h = 3           # timestep length [seconds]
+    N = 300000      # N*timestep = simulation length [seconds]
+    G = 6.67e-11    # gravitational constant [SI units]
 
     def __init__(self, index, mass, x_pos, y_pos, x_vel, y_vel):
         self.index = index
