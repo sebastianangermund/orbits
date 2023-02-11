@@ -9,17 +9,17 @@ from three_bodies import Particle
 # ------------------------------------------- EDIT
 
 # sim variables
-simulation_step_length = 0.04
-simulation_steps = 500
+simulation_step_length = 0.1
+simulation_steps = 2500
 gravitational_constant = 1
 
 # particle variables
 theta_range = (0, 2*np.pi)
-radius_range = (25, 200)
-velocity_range = (300, 400)
-mass_range = (10, 50)
-sun_mass = 10**5
-num_of_particles = 10
+radius_range = (100, 200)
+velocity_range = (80, 100)
+mass_range = (1, 5)
+sun_mass = 10**4
+num_of_particles = 100
 
 # ------------------------------------------- DON'T EDIT
 Particle.G = gravitational_constant
