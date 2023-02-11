@@ -7,7 +7,7 @@ from plot import plot
 # ---------------------------------------------- Physics
 Particle.G = 1.002
 Particle.h = 0.002
-Particle.N = 3000
+Particle.N = 4000
 
 num_particles = 3
 Particle._set_size(num_particles)

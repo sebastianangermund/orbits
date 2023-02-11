@@ -5,27 +5,21 @@ from matplotlib import animation
 
 
 def plot(particle_array, num_particles, axees, sim_len, plot_step):
+    """Copy pasted potato code"""
     fig = plt.figure()
     ax1 = plt.axes(xlim=(-axees, axees),
                    ylim=(-axees, axees))
-    line, = ax1.plot([], [], lw=2)
+    _, = ax1.plot([], [], lw=2)
     plt.xlabel('X')
     plt.ylabel('Y')
 
     Writer = animation.writers['ffmpeg']
     writer = Writer(fps=35, metadata=dict(artist='Me'), bitrate=1800)
 
-    plotlays = [num_particles]
-    colors = ['blue','green','red','cyan','magenta','black']
-    plotcols = [
-        colors[i] for i in [
-            random.randrange(0, len(colors)) for _ in range(0, num_particles+1)
-        ]
-    ]
-
+    colors = ['blue','green','red','cyan','magenta','black','yellow']
     lines = []
-    for index in range(num_particles):
-        lobj = ax1.plot([],[],lw=2,color=plotcols[index])[0]
+    for _ in range(num_particles):
+        lobj = ax1.plot([],[],lw=2,color=colors[random.randrange(0,len(colors))])[0]
         lines.append(lobj)
 
     def init():
@@ -54,6 +48,6 @@ def plot(particle_array, num_particles, axees, sim_len, plot_step):
                                    interval=10, blit=True)
     start = time.perf_counter()
     print('Creating animation ...\n')
-    anim.save('lines.mp4', writer=writer)
+    anim.save('simulation.mp4', writer=writer)
     calc_time = time.perf_counter() - start
     print(f'animation time: {calc_time} s\n')
