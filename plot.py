@@ -10,13 +10,13 @@ def plot(particle_array, num_particles, axees, sim_len, plot_step):
     ax1 = plt.axes(xlim=(-axees, axees),
                    ylim=(-axees, axees))
     _, = ax1.plot([], [], lw=2)
-    plt.xlabel('X')
-    plt.ylabel('Y')
+    plt.xlabel('X [m]')
+    plt.ylabel('Y [m]')
 
     Writer = animation.writers['ffmpeg']
     writer = Writer(fps=35, metadata=dict(artist='Me'), bitrate=1800)
 
-    colors = ['blue','green','red','cyan','magenta','black','yellow']
+    colors = ['blue','green','red','black'] # 'cyan','magenta','yellow
     lines = []
     for _ in range(num_particles):
         lobj = ax1.plot([],[],lw=2,color=colors[random.randrange(0,len(colors))])[0]
@@ -45,7 +45,7 @@ def plot(particle_array, num_particles, axees, sim_len, plot_step):
     # call the animator.  blit=True means only re-draw the parts that have changed.
     anim = animation.FuncAnimation(fig, animate, init_func=init,
                                    frames=range(0, sim_len, plot_step),
-                                   interval=10, blit=True)
+                                   interval=10, blit=False)
     start = time.perf_counter()
     print('Creating animation ...\n')
     anim.save('simulation.mp4', writer=writer)

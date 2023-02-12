@@ -10,8 +10,8 @@ apt-get install ffmpeg
 In `chaos.py` you can get a nice effect of chaos. Make a small change to any initial value and the outcome will differ dramatically.
 
 ## Modules
-`three_bodies.py` contain the model for initiating a particle array and updating it. Don't touch.
-`plot.py` contain a function you import to write a mpeg-plot. Can take a really long time for long simulations.
+`model.py` contains the model for initiating a particle array and updating it. Don't touch the code.  
+`plot.py` contains an ugly function you import to write a mpeg-plot. Can take a really long time for long simulations.
 
 ## Legacy
 `matlab/` is legacy.

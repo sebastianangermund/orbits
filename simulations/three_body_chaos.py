@@ -1,6 +1,11 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# THREE BODY CHAOS
+#
+# Vary the initial conditions slightly to get a dramatic change in orbits
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 import math
 
-from three_bodies import Particle
+from model import Particle
 from plot import plot
 
 
@@ -12,8 +17,9 @@ Particle.N = 4000
 num_particles = 3
 Particle._set_size(num_particles)
 
-# ---------------------------------------------- Particle 1
-earth = Particle(
+# ---------------------------------------------- model
+
+planet_1 = Particle(
     index = 0,
     mass = 100,
     x_pos = 0,
@@ -21,8 +27,8 @@ earth = Particle(
     x_vel = 5,
     y_vel = 10*(-math.sin((2*math.pi)/3)),
 )
-# ---------------------------------------------- Particle 2
-moon = Particle(
+
+planet_2 = Particle(
     index = 1,
     mass = 100,
     x_pos = 1,
@@ -30,8 +36,8 @@ moon = Particle(
     x_vel = 5,
     y_vel = 10*(math.sin((2*math.pi)/3)),
 )
-# ----------------------------------------------- Particle 3
-satellite = Particle(
+
+planet_3 = Particle(
     index = 2,
     mass = 100,
     x_pos = 1/2,
@@ -39,6 +45,7 @@ satellite = Particle(
     x_vel = -10 * math.sqrt((1/4+math.pow(math.sin((2*math.pi)/3), 2))),
     y_vel = 0,
 )
+
 # ----------------------------------------------- Calculate
 number_of_cores = None
 for timestep in range(2, Particle.N):

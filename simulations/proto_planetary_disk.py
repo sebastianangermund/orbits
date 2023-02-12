@@ -1,3 +1,8 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# PROTO PLANETARY SOLAR SYSTEM
+#
+# Simulate thousands of small objects orbiting a star
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 import time
 import random
 import numpy as np
