@@ -6,7 +6,7 @@ apt-get install ffmpeg
 ```
 
 ## play
-`playground.py` is a dashbord where you can play with different initial condition for a "protoplanetary disk", a.k.a. early solarsystem.  
+Edit `playground.py` to generate a simulation.  
 In `simulations` there are a few template simulations for inspiration.
 
 ## Modules
