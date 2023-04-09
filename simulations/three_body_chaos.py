@@ -6,7 +6,7 @@
 import math
 
 from model import Particle
-from plot import plot
+from utils.plot import plot
 
 
 # ---------------------------------------------- Physics

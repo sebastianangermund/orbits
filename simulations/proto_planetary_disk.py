@@ -7,7 +7,7 @@ import time
 import random
 import numpy as np
 
-from plot import plot
+from utils.plot import plot
 from model import Particle
 
 

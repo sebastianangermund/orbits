@@ -2,7 +2,7 @@ import time
 import random
 import numpy as np
 
-from plot import plot
+from utils.plot import plot
 from model import Particle
 
 
@@ -10,7 +10,7 @@ from model import Particle
 
 # sim variables
 simulation_step_length = 0.1
-simulation_steps = 2500
+simulation_steps = 500
 gravitational_constant = 1
 
 # particle variables
@@ -19,7 +19,7 @@ radius_range = (100, 200)
 velocity_range = (80, 100)
 mass_range = (1, 5)
 sun_mass = 10**4
-num_of_particles = 100
+num_of_particles = 3000
 
 # ------------------------------------------- DON'T EDIT
 Particle.G = gravitational_constant
