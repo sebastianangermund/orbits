@@ -15,11 +15,11 @@ gravitational_constant = 1
 
 # particle variables
 theta_range = (0, 2*np.pi)
-radius_range = (100, 200)
-velocity_range = (80, 100)
+radius_range = (80, 110)
+velocity_range = (100, 120)
 mass_range = (1, 5)
 sun_mass = 10**4
-num_of_particles = 3000
+num_of_particles = 200
 
 # ------------------------------------------- DON'T EDIT
 Particle.G = gravitational_constant

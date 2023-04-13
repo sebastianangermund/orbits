@@ -9,6 +9,8 @@ import weakref
 import numpy as np
 import multiprocessing as mp
 
+from multiprocessing import get_context
+
 
 class Particle:
     use_multiprocessing = False
@@ -93,7 +95,7 @@ class Particle:
     @classmethod
     def run_update(cls, cores):
         if cls.use_multiprocessing:
-            with mp.Pool(cores) as p:
+            with mp.get_context("fork").Pool(cores) as p:
                 xy_list = p.map(cls._update_positions_parallel, cls._instances)
             for index, instance in enumerate(cls._instances, 0):
                 cls.particle_array[instance.index*2, cls.timestep], cls.particle_array[instance.index*2+1, cls.timestep] = xy_list[index]
